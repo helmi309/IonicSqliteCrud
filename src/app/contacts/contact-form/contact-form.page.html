@@ -1,0 +1,24 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/contacts"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ title }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form (ngSubmit)="onSubmit()">
+    <ion-item>
+      <ion-label position="stacked">Name</ion-label>
+      <ion-input autocapitalize="on" [(ngModel)]="contact.name" name="name" required></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Telp</ion-label>
+      <ion-input autocapitalize="on" [(ngModel)]="contact.telp" name="telp" type="number" required></ion-input>
+    </ion-item>
+    <div class="ion-margin-vertical">
+      <ion-button type="submit" color="secondary" expand="block">Save</ion-button>
+    </div>
+  </form>
+</ion-content>
