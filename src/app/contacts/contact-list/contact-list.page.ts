@@ -176,8 +176,16 @@ export class ContactListPage implements OnInit {
     };
   }
   loadData(event) {
+        // if(event.isTrusted === true){
+        //   event.target.complete();
+        // }
+
     setTimeout(() => {
-      event.target.complete();
+      console.log(event);
+      if(event.isTrusted === false){
+        event.target.complete();
+      }
+
       this.setPageInfinite(this.Pagenumber+1)
       // App logic to determine if all data is loaded
       // and disable the infinite scroll

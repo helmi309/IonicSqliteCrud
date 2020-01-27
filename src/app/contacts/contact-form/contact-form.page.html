@@ -17,6 +17,11 @@
       <ion-label position="stacked">Telp</ion-label>
       <ion-input autocapitalize="on" [(ngModel)]="contact.telp" name="telp" type="number" required></ion-input>
     </ion-item>
+    <ion-button (click)="takeSnap()">
+      Take Snap
+    </ion-button>
+    <img #waterMarkedImage>
+
     <div class="ion-margin-vertical">
       <ion-button type="submit" color="secondary" expand="block">Save</ion-button>
     </div>

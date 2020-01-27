@@ -13,6 +13,9 @@ import { SQLite } from '@ionic-native/sqlite/ngx';
 import { SQLitePorter } from '@ionic-native/sqlite-porter/ngx';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 
+import { Camera } from '@ionic-native/camera/ngx';
+import { Geolocation } from '@ionic-native/geolocation/ngx';
+
 
 @NgModule({
   declarations: [AppComponent],
@@ -24,6 +27,8 @@ import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     SQLite,
     SQLitePorter,
+    Camera,
+    Geolocation,
     LocalNotifications
   ],
   bootstrap: [AppComponent]
