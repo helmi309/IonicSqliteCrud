@@ -11,6 +11,8 @@ import { AppRoutingModule } from './app-routing.module';
 
 import { SQLite } from '@ionic-native/sqlite/ngx';
 import { SQLitePorter } from '@ionic-native/sqlite-porter/ngx';
+import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
+
 
 @NgModule({
   declarations: [AppComponent],
@@ -21,7 +23,8 @@ import { SQLitePorter } from '@ionic-native/sqlite-porter/ngx';
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     SQLite,
-    SQLitePorter
+    SQLitePorter,
+    LocalNotifications
   ],
   bootstrap: [AppComponent]
 })

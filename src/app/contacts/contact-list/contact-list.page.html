@@ -11,6 +11,11 @@
 
 <ion-content>
 
+
+  <ion-searchbar placeholder="Search"
+                 (ionClear)="doSerchClear()"
+                 (ionChange)="doSerchBarChange($event)">
+  </ion-searchbar>
   <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
     <ion-refresher-content
             pullingIcon="arrow-dropdown"
@@ -19,15 +24,10 @@
             refreshingText="Refreshing...">
     </ion-refresher-content>
   </ion-refresher>
-  <ion-searchbar placeholder="Search"
-                 (ionClear)="doSerchClear()"
-                 (ionChange)="doSerchBarChange($event)">
-  </ion-searchbar>
-
   <ion-list id="data">
-    <ion-item-sliding *ngFor="let contact of contacts">
+    <ion-item-sliding *ngFor="let contact of contacts;let i= index">
       <ion-item>
-        <ion-label>{{contact.name}} {{contact.telp}} </ion-label>
+        <ion-label>{{ i+1 }} | {{contact.name}} {{contact.telp}} </ion-label>
       </ion-item>
 
       <ion-item-options side="start">
@@ -40,6 +40,12 @@
       </ion-item-options>
     </ion-item-sliding>
   </ion-list>
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
+    <ion-infinite-scroll-content
+            loadingSpinner="bubbles"
+            loadingText="Loading more data...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
   <ion-list id="loading">
     <ion-item>
       <ion-thumbnail slot="start">

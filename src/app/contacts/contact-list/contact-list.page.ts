@@ -1,4 +1,4 @@
-import { ToastController, AlertController } from '@ionic/angular';
+import { ToastController, AlertController, IonInfiniteScroll } from '@ionic/angular';
 import { ContactService } from './../shared/contact.service';
 import { Contact } from './../shared/contact';
 import { Component, OnInit } from '@angular/core';
@@ -10,6 +10,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ContactListPage implements OnInit {
   contacts: Contact[] = [];
+  contacts2: Contact[] = [];
+  infiniteScroll: IonInfiniteScroll;
+  pager: any = {};
+  nomer: number;
+  pagedItemsinfinite: any[];
+  Pagenumber: number;
+  count: number;
 
   constructor(
     private contactService: ContactService,
@@ -20,17 +27,34 @@ export class ContactListPage implements OnInit {
   }
 
   ionViewWillEnter() {
+    this.nomer = 25;
     this.loadContacts();
   }
 
   async loadContacts() {
    document.getElementById('loading').style.display = 'block';
    document.getElementById('data').style.display = 'none';
-    this.contacts = await this.contactService.getAll();
+    this.contacts2 = [];
+    this.contacts = [];
+    this.contacts2 = await this.contactService.getAll();
+    this.setPageInfinite(1);
      document.getElementById('loading').style.display = 'none';
     document.getElementById('data').style.display = 'block';
   }
-
+  setPageInfinite(page: number) {
+    this.Pagenumber = page;
+    // get pager object from service
+    this.pager = this.getPager(this.contacts2.length, page);
+    if(this.Pagenumber <= this.pager.totalPages) {
+      // get current page of items
+      this.pagedItemsinfinite = this.contacts2.slice(this.pager.startIndex, this.pager.endIndex + 1);
+      this.count = 0;
+      for (let item of this.pagedItemsinfinite) {
+        this.contacts.push(this.pagedItemsinfinite[this.count]);
+        this.count++;
+      }
+    }
+  }
   doSerchClear() {
     this.loadContacts();
   }
@@ -101,4 +125,67 @@ export class ContactListPage implements OnInit {
       toast.present();
     }
   }
+  getPager(totalItems: number, currentPage: number = 1, pageSize: number = 17) {
+    // calculate total pages
+    let totalPages = Math.ceil(totalItems / pageSize);
+
+    // ensure current page isn't out of range
+    if (currentPage < 1) {
+      currentPage = 1;
+    } else if (currentPage > totalPages) {
+      currentPage = totalPages;
+    }
+
+    let startPage: number, endPage: number;
+    if (totalPages <= 10) {
+      // less than 10 total pages so show all
+      startPage = 1;
+      endPage = totalPages;
+    } else {
+      // more than 10 total pages so calculate start and end pages
+      if (currentPage <= 6) {
+        startPage = 1;
+        endPage = 10;
+      } else if (currentPage + 4 >= totalPages) {
+        startPage = totalPages - 9;
+        endPage = totalPages;
+      } else {
+        startPage = currentPage - 5;
+        endPage = currentPage + 4;
+      }
+    }
+
+    // calculate start and end item indexes
+    let startIndex = (currentPage - 1) * pageSize;
+    let endIndex = Math.min(startIndex + pageSize - 1, totalItems - 1);
+
+    // create an array of pages to ng-repeat in the pager control
+    let pages = Array.from(Array((endPage + 1) - startPage).keys()).map(i => startPage + i);
+
+    // return object with all pager properties required by the view
+    return {
+      totalItems: totalItems,
+      currentPage: currentPage,
+      pageSize: pageSize,
+      totalPages: totalPages,
+      startPage: startPage,
+      endPage: endPage,
+      startIndex: startIndex,
+      endIndex: endIndex,
+      pages: pages
+    };
+  }
+  loadData(event) {
+    setTimeout(() => {
+      event.target.complete();
+      this.setPageInfinite(this.Pagenumber+1)
+      // App logic to determine if all data is loaded
+      // and disable the infinite scroll
+    }, 500);
+  }
+
+  toggleInfiniteScroll() {
+    this.infiniteScroll.disabled = !this.infiniteScroll.disabled;
+  }
+
 }

@@ -1,7 +1,8 @@
 {
   "name": "IonicSQLiteExample",
   "integrations": {
-    "cordova": {}
+    "cordova": {},
+    "capacitor": {}
   },
   "type": "angular"
 }
