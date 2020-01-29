@@ -3,6 +3,8 @@ import {ContactService} from './../shared/contact.service';
 import {Contact} from './../shared/contact';
 import {Component, OnInit, Injectable} from '@angular/core';
 import {Facebook, FacebookLoginResponse} from '@ionic-native/facebook/ngx';
+import { GooglePlus } from '@ionic-native/google-plus/ngx';
+
 
 @Component({
     selector: 'app-contact-list',
@@ -25,7 +27,8 @@ export class ContactListPage implements OnInit {
         private contactService: ContactService,
         private toastCtrl: ToastController,
         private alertCtrl: AlertController,
-        private fb: Facebook) {
+        private fb: Facebook,
+        private googlePlus: GooglePlus) {
     }
 
     ngOnInit() {
@@ -72,7 +75,11 @@ export class ContactListPage implements OnInit {
             this.loadContacts();
         }, 1000);
     }
-
+    LoginGmail() {
+        this.googlePlus.login({})
+            .then(res => console.log(res))
+            .catch(err => console.error(err));
+    }
     Login() {
         this.fb.getLoginStatus().then((res) => {
             if (res.status !== 'connected') {

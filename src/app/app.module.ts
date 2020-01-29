@@ -16,6 +16,7 @@ import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 import { Camera } from '@ionic-native/camera/ngx';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { Facebook } from '@ionic-native/facebook/ngx';
+import { GooglePlus } from '@ionic-native/google-plus/ngx';
 
 
 @NgModule({
@@ -25,6 +26,7 @@ import { Facebook } from '@ionic-native/facebook/ngx';
   providers: [
     StatusBar,
     Facebook,
+    GooglePlus,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     SQLite,
