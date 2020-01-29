@@ -1,18 +1,21 @@
 import { ToastController, AlertController, IonInfiniteScroll } from '@ionic/angular';
 import { ContactService } from './../shared/contact.service';
 import { Contact } from './../shared/contact';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Injectable } from '@angular/core';
+import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook/ngx';
 
 @Component({
   selector: 'app-contact-list',
   templateUrl: './contact-list.page.html',
   styleUrls: ['./contact-list.page.scss'],
 })
+
 export class ContactListPage implements OnInit {
   contacts: Contact[] = [];
   contacts2: Contact[] = [];
   infiniteScroll: IonInfiniteScroll;
   pager: any = {};
+  userData: any;
   nomer: number;
   pagedItemsinfinite: any[];
   Pagenumber: number;
@@ -21,7 +24,8 @@ export class ContactListPage implements OnInit {
   constructor(
     private contactService: ContactService,
     private toastCtrl: ToastController,
-    private alertCtrl: AlertController) { }
+    private alertCtrl: AlertController,
+    private fb: Facebook) { }
 
   ngOnInit() {
   }
@@ -65,6 +69,30 @@ export class ContactListPage implements OnInit {
     }, 1000);
   }
 
+  Login() {
+    this.fb.getLoginStatus().then((res) => {
+      if (res.status === 'connected') {
+      console.log(res);
+        this.fb.api('me?fields=id,name,email,first_name,picture.width(720).height(720).as(picture_large)', []).then(profile => {
+          this.userData = {email: profile['email'], first_name: profile['first_name'], picture: profile['picture_large']['data']['url'], username: profile['name'] }
+        });
+      } else {
+        console.log(res);
+        // Not already logged in to FB so sign in
+        this.fb.login(['email', 'public_profile']).then((response: FacebookLoginResponse) => {
+          this.fb.api('me?fields=id,name,email,first_name,picture.width(720).height(720).as(picture_large)', []).then(profile => {
+            this.userData = {email: profile['email'], first_name: profile['first_name'], picture: profile['picture_large']['data']['url'], username: profile['name'] }
+          });
+        }).catch((error) => {
+          console.log(error);
+
+          // FB Log in error
+        });
+      }
+    });
+
+    this.fb.logEvent(this.fb.EVENTS.EVENT_NAME_ADDED_TO_CART);
+  }
   async doSerchBarChange($event: any) {
     const value = $event.target.value;
     if (value && value.length >= 2) {

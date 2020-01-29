@@ -176,10 +176,18 @@
     </ion-item>
 
   </ion-list>
-
+  <ion-card *ngIf="userData">
+    {{ userData.username }}
+    <img [src]="userData.picture" />
+    Email: {{ userData.email }}
+    First Name: {{ userData.first_name }}
+  </ion-card>
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button color="secondary" [routerLink]="['new']">
       <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-button color="secondary" (click)="Login()">
+      <ion-icon name="add">Login FB</ion-icon>
     </ion-fab-button>
   </ion-fab>
 </ion-content>

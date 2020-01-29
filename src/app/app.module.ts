@@ -15,6 +15,7 @@ import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 
 import { Camera } from '@ionic-native/camera/ngx';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { Facebook } from '@ionic-native/facebook/ngx';
 
 
 @NgModule({
@@ -23,6 +24,7 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule],
   providers: [
     StatusBar,
+    Facebook,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     SQLite,
